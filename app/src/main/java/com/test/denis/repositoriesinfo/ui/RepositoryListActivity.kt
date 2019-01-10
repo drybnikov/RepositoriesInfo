@@ -1,7 +1,8 @@
-package com.test.denis.repositoriesinfo
+package com.test.denis.repositoriesinfo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.test.denis.repositoriesinfo.R
 
 class RepositoryListActivity : AppCompatActivity() {
 
