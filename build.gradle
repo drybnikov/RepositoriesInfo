@@ -4,6 +4,10 @@ buildscript {
     ext {
         kotlin_version = '1.3.10'
         dagger2_version = '2.16'
+        rxjava2_version = '2.1.3'
+        rx_android_version = '2.0.1'
+        retrofit_version = '2.3.0'
+        okhttp_logging_interceptor_version = '3.9.0'
     }
     repositories {
         google()
