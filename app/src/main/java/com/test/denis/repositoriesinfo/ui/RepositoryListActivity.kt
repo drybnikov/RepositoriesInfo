@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.di.Injectable
 import com.test.denis.repositoriesinfo.network.RepoRepository
-import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -21,8 +20,6 @@ class RepositoryListActivity : AppCompatActivity(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_repository_list)
-
-        AndroidInjection.inject(this)
 
         if (savedInstanceState == null)
             loadData()
