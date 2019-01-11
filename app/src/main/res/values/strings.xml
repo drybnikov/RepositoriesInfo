@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Repositories Info</string>
     <string name="search_hint">Type repo name</string>
+
+    <string name="retry">Retry</string>
+    <string name="repo_error">An error occurred while loading the repos</string>
 </resources>

@@ -2,6 +2,8 @@ package com.test.denis.repositoriesinfo.ui
 
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.StringRes
+import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.model.Repo
 import com.test.denis.repositoriesinfo.model.RepositoryResponse
 import com.test.denis.repositoriesinfo.network.PAGE_SIZE
@@ -25,7 +27,7 @@ class RepositoryListPresenter @Inject constructor(private val repository: RepoRe
         if (savedInstanceState != null) {
             restoreState(savedInstanceState)
         } else {
-            this.view?.setProgressVisibility(true)
+            onRetrieveReposListStart()
             loadData()
         }
     }
@@ -36,7 +38,7 @@ class RepositoryListPresenter @Inject constructor(private val repository: RepoRe
 
         view?.apply {
             showRepositoryList(viewState.data)
-            setProgressVisibility(false)
+            onRetrieveReposListDone()
         }
     }
 
@@ -45,7 +47,7 @@ class RepositoryListPresenter @Inject constructor(private val repository: RepoRe
             repository
                 .searchRepo(query = viewState.queryString, page = viewState.currentPage)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onDataLoaded) { Log.e("loadData", "error: $it") }
+                .subscribe(this::onDataLoaded, this::onDataError)
         )
     }
 
@@ -53,16 +55,22 @@ class RepositoryListPresenter @Inject constructor(private val repository: RepoRe
         Log.d("onDataLoaded", "data: $data")
         viewState.totalCount = data.total
         viewState.data.addAll(data.items)
+        onRetrieveReposListDone()
 
         view?.apply {
             if (viewState.isFirstPage()) {
                 showMoreItems(data.items)
-                setLoadMoreVisibility(false)
             } else {
                 showRepositoryList(data.items)
-                setProgressVisibility(false)
             }
         }
+    }
+
+    private fun onDataError(error: Throwable) {
+        Log.e("onDataError", "error: $error")
+
+        onRetrieveReposListDone()
+        view?.showError(R.string.repo_error)
     }
 
     fun onDetach() {
@@ -86,15 +94,31 @@ class RepositoryListPresenter @Inject constructor(private val repository: RepoRe
             data.clear()
         }
 
-        view?.apply {
-            setProgressVisibility(true)
-            showRepositoryList(emptyList())
-        }
+        onRetrieveReposListStart()
         loadData()
     }
 
     fun onSaveInstanceState(outState: Bundle?) {
         outState?.putSerializable(VIEW_STATE_KEY, viewState)
+    }
+
+    fun retry() {
+        onRetrieveReposListStart()
+        loadData()
+    }
+
+    private fun onRetrieveReposListStart() {
+        view?.apply {
+            setProgressVisibility(true)
+            hideError()
+        }
+    }
+
+    private fun onRetrieveReposListDone() {
+        view?.apply {
+            setProgressVisibility(false)
+            setLoadMoreVisibility(false)
+        }
     }
 }
 
@@ -103,6 +127,8 @@ interface RepositoryListView {
     fun setProgressVisibility(visible: Boolean)
     fun setLoadMoreVisibility(visible: Boolean)
     fun showMoreItems(repos: List<Repo>)
+    fun showError(@StringRes errorMessage: Int)
+    fun hideError()
 }
 
 data class ViewState(

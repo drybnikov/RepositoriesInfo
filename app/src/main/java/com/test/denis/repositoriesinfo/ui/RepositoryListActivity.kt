@@ -10,9 +10,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.di.Injectable
 import com.test.denis.repositoriesinfo.model.Repo
@@ -25,6 +27,7 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     lateinit var presenter: RepositoryListPresenter
 
     private lateinit var viewAdapter: RepositoryListAdapter
+    private var errorSnackbar: Snackbar? = null
     private var isLastPage = false
     private var isLoading = false
 
@@ -122,5 +125,15 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         presenter.onSaveInstanceState(outState)
         super.onSaveInstanceState(outState, outPersistentState)
+    }
+
+    override fun showError(@StringRes errorMessage: Int) {
+        errorSnackbar = Snackbar.make(rootView, errorMessage, Snackbar.LENGTH_INDEFINITE)
+        errorSnackbar?.setAction(R.string.retry, { presenter.retry()})
+        errorSnackbar?.show()
+    }
+
+    override fun hideError() {
+        errorSnackbar?.dismiss()
     }
 }
