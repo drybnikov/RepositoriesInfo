@@ -13,6 +13,7 @@ import com.test.denis.repositoriesinfo.network.RepoRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
+import java.io.IOException
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -79,15 +80,17 @@ class RepositoryListPresenter @Inject constructor(
         onRetrieveReposListDone()
         view?.showError(R.string.repo_error)
 
-        connectionDisposable = connectionStatusProvider
-            .status
-            .subscribe {
-                if (it == ConnectionStatus.CONNECTED) {
-                    connectionDisposable.dispose()
+        if (error is IOException) {
+            connectionDisposable = connectionStatusProvider
+                .status
+                .subscribe {
+                    if (it == ConnectionStatus.CONNECTED) {
+                        connectionDisposable.dispose()
 
-                    setQuery(viewState.queryString)
+                        setQuery(viewState.queryString)
+                    }
                 }
-            }
+        }
     }
 
     fun onDetach() {
