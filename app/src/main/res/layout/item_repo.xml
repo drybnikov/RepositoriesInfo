@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        app:cardBackgroundColor="@color/repo_item_color_states"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="8dp"
+        app:cardElevation="@dimen/card_corner">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_gap">
+
+        <ImageView
+                android:id="@+id/ownerImg"
+                android:layout_width="@dimen/avatar_width"
+                android:layout_height="@dimen/avatar_width"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="@dimen/small_gap"
+        />
+
+        <TextView
+                android:id="@+id/repoName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:textColor="?colorPrimaryVariant"
+                android:paddingLeft="@dimen/small_gap"
+                app:layout_constraintLeft_toRightOf="@+id/ownerImg"
+                app:layout_constraintRight_toLeftOf="@id/repoSize"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/ownerName"
+                tools:text="My repo"/>
+
+        <TextView
+                android:id="@+id/ownerName"
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/small_gap"
+                app:layout_constraintLeft_toRightOf="@id/ownerImg"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/repoName"
+                tools:text="Repo owner"/>
+
+        <TextView
+                android:id="@+id/repoSize"
+                style="@style/Base.TextAppearance.AppCompat.Small"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                app:layout_constraintLeft_toRightOf="@id/repoName"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="111"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

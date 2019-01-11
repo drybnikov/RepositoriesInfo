@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="small_gap">4dp</dimen>
+    <dimen name="avatar_width">64dp</dimen>
+    <dimen name="card_corner">6dp</dimen>
+</resources>
