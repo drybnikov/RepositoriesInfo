@@ -3,6 +3,7 @@ package com.test.denis.repositoriesinfo.model
 import com.squareup.moshi.Json
 
 data class RepositoryResponse(
+    @field:Json(name = "total_count")
     val total: Int = 0,
     val items: List<Repo>
 )

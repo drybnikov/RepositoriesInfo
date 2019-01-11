@@ -11,7 +11,20 @@ import kotlinx.android.synthetic.main.item_repo.view.*
 
 class RepositoryListAdapter : RecyclerView.Adapter<RepoItemViewHolder>() {
 
-    var items: List<Repo> = emptyList()
+    private val items: ArrayList<Repo> = arrayListOf()
+
+    fun initData(listItems: List<Repo>){
+        items.clear()
+        items.addAll(listItems)
+        notifyDataSetChanged()
+    }
+
+    fun addData(listItems: List<Repo>) {
+        var size = this.items.size
+        items.addAll(listItems)
+        var sizeNew = items.size
+        notifyItemRangeChanged(size, sizeNew)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
