@@ -13,7 +13,9 @@ data class Repo(
     val size: Int,
     @field:Json(name = "full_name")
     val fullName: String,
-    val owner: Owner
+    val owner: Owner,
+    @field:Json(name = "has_wiki")
+    val hasWiki: Boolean
 )
 
 data class Owner(
