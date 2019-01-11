@@ -6,6 +6,28 @@
         android:layout_width="match_parent" android:layout_height="match_parent"
         tools:context=".ui.RepositoryListActivity">
 
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_gap"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/normal_gap"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/normal_gap"
+            android:id="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/inputSearch"
+                android:inputType="textNoSuggestions"
+                android:imeOptions="actionSearch|flagNoExtractUi"
+                android:hint="@string/search_hint"
+                tools:text="google"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
@@ -23,9 +45,11 @@
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/loadMoreBar"
-            tools:listitem="@layout/item_repo"/>
+            android:layout_marginTop="@dimen/normal_gap"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            tools:listitem="@layout/item_repo"
+            android:scrollbars="vertical"/>
 
     <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/progressBar"

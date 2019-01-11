@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Repositories Info</string>
+    <string name="search_hint">Type repo name</string>
 </resources>
