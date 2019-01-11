@@ -1,6 +1,7 @@
 package com.test.denis.repositoriesinfo.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class RepositoryResponse(
     @field:Json(name = "total_count")
@@ -17,7 +18,7 @@ data class Repo(
     val owner: Owner,
     @field:Json(name = "has_wiki")
     val hasWiki: Boolean
-)
+) : Serializable
 
 data class Owner(
     @field:Json(name = "login")
@@ -26,4 +27,4 @@ data class Owner(
     val url: String?,
     @field:Json(name = "avatar_url")
     val avatarUrl: String?
-)
+) : Serializable
