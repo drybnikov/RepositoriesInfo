@@ -28,7 +28,6 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
 
     private lateinit var viewAdapter: RepositoryListAdapter
     private var errorSnackbar: Snackbar? = null
-    private var isLastPage = false
     private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +47,6 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
             adapter = viewAdapter
 
             addOnScrollListener(object : PaginationScrollListener(layoutManager as LinearLayoutManager) {
-                override fun isLastPage(): Boolean {
-                    return isLastPage
-                }
 
                 override fun isLoading(): Boolean {
                     return isLoading
@@ -92,6 +88,7 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
 
 
     override fun showRepositoryList(repos: List<Repo>) {
+        isLoading = false
         viewAdapter.initData(repos)
     }
 
@@ -128,8 +125,9 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     }
 
     override fun showError(@StringRes errorMessage: Int) {
+        isLoading = false
         errorSnackbar = Snackbar.make(rootView, errorMessage, Snackbar.LENGTH_INDEFINITE)
-        errorSnackbar?.setAction(R.string.retry, { presenter.retry()})
+        errorSnackbar?.setAction(R.string.retry, { presenter.retry() })
         errorSnackbar?.show()
     }
 

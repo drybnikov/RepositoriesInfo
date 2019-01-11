@@ -6,18 +6,25 @@ import androidx.annotation.StringRes
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.model.Repo
 import com.test.denis.repositoriesinfo.model.RepositoryResponse
+import com.test.denis.repositoriesinfo.network.ConnectionStatus
+import com.test.denis.repositoriesinfo.network.ConnectionStatusProvider
 import com.test.denis.repositoriesinfo.network.PAGE_SIZE
 import com.test.denis.repositoriesinfo.network.RepoRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposables
 import java.io.Serializable
 import javax.inject.Inject
 
 const val FIRST_PAGE: Int = 1
 const val VIEW_STATE_KEY: String = "stored_voew_state"
 
-class RepositoryListPresenter @Inject constructor(private val repository: RepoRepository) {
+class RepositoryListPresenter @Inject constructor(
+    private val repository: RepoRepository,
+    private val connectionStatusProvider: ConnectionStatusProvider
+) {
     private val disposable = CompositeDisposable()
+    private var connectionDisposable = Disposables.disposed()
     private var view: RepositoryListView? = null
     private var viewState = ViewState.EMPTY
 
@@ -71,11 +78,22 @@ class RepositoryListPresenter @Inject constructor(private val repository: RepoRe
 
         onRetrieveReposListDone()
         view?.showError(R.string.repo_error)
+
+        connectionDisposable = connectionStatusProvider
+            .status
+            .subscribe {
+                if (it == ConnectionStatus.CONNECTED) {
+                    connectionDisposable.dispose()
+
+                    setQuery(viewState.queryString)
+                }
+            }
     }
 
     fun onDetach() {
         view = null
         disposable.clear()
+        connectionDisposable.dispose()
     }
 
     fun loadNextPage() {
