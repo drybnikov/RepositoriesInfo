@@ -1,7 +1,8 @@
 package com.test.denis.repositoriesinfo.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
-import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 
 data class RepositoryResponse(
     @field:Json(name = "total_count")
@@ -9,6 +10,7 @@ data class RepositoryResponse(
     val items: List<Repo>
 )
 
+@Parcelize
 data class Repo(
     val id: Long,
     val name: String,
@@ -18,8 +20,9 @@ data class Repo(
     val owner: Owner,
     @field:Json(name = "has_wiki")
     val hasWiki: Boolean
-) : Serializable
+) : Parcelable
 
+@Parcelize
 data class Owner(
     @field:Json(name = "login")
     val login: String,
@@ -27,4 +30,4 @@ data class Owner(
     val url: String?,
     @field:Json(name = "avatar_url")
     val avatarUrl: String?
-) : Serializable
+) : Parcelable

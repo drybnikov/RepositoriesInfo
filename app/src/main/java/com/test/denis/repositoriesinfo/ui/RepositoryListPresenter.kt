@@ -1,6 +1,7 @@
 package com.test.denis.repositoriesinfo.ui
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.StringRes
 import com.test.denis.repositoriesinfo.R
@@ -13,8 +14,8 @@ import com.test.denis.repositoriesinfo.network.RepoRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
+import kotlinx.android.parcel.Parcelize
 import java.io.IOException
-import java.io.Serializable
 import javax.inject.Inject
 
 const val FIRST_PAGE: Int = 1
@@ -41,7 +42,7 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     private fun restoreState(savedInstanceState: Bundle) {
-        viewState = savedInstanceState.getSerializable(VIEW_STATE_KEY) as ViewState? ?: ViewState.EMPTY
+        viewState = savedInstanceState.getParcelable(VIEW_STATE_KEY) as ViewState? ?: ViewState.EMPTY
         Log.d("restoreState", "data: $viewState")
 
         view?.apply {
@@ -120,7 +121,7 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putSerializable(VIEW_STATE_KEY, viewState)
+        outState?.putParcelable(VIEW_STATE_KEY, viewState)
     }
 
     fun retry() {
@@ -152,16 +153,18 @@ interface RepositoryListView {
     fun hideError()
 }
 
+@Parcelize
 data class ViewState(
     var queryString: String = "tetris",
     var currentPage: Int = FIRST_PAGE,
     var totalCount: Int = 0,
     var data: ArrayList<Repo>
-) : Serializable {
+) : Parcelable {
     companion object {
         val EMPTY = ViewState(queryString = "tetris", currentPage = FIRST_PAGE, data = arrayListOf())
     }
-
-    fun hasMoreElements() = currentPage * PAGE_SIZE < totalCount
-    fun isFirstPage() = currentPage > FIRST_PAGE
 }
+
+fun ViewState.hasMoreElements() = currentPage * PAGE_SIZE < totalCount
+
+fun ViewState.isFirstPage() = currentPage > FIRST_PAGE
