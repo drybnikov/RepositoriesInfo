@@ -14,6 +14,9 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.di.Injectable
 import dagger.android.DispatchingAndroidInjector
@@ -41,12 +44,13 @@ class MotionLayoutActivity : AppCompatActivity(), Injectable, HasSupportFragment
                 drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        RepositoryListFragment.attachIfNeeded(R.id.contentContainer, supportFragmentManager)
+        navigation.setupWithNavController(navController())
+        //setupActionBarWithNavController(navController())
 
         initSearchInputListener()
         searchMotion.setTransitionListener(object : TransitionAdapter() {
             override fun onTransitionCompleted(motionLayout: MotionLayout, currentId: Int) {
-                if(currentId == R.id.endSearch) {
+                if (currentId == R.id.endSearch) {
                     inputSearch.requestFocus()
                 }
             }
@@ -96,4 +100,6 @@ class MotionLayoutActivity : AppCompatActivity(), Injectable, HasSupportFragment
     }
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
+
+    fun navController() = findNavController(R.id.contentContainer)
 }

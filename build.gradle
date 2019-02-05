@@ -2,13 +2,14 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.10'
+        kotlin_version = '1.3.20'
         dagger2_version = '2.16'
         rxjava2_version = '2.1.3'
         rx_android_version = '2.0.1'
         retrofit_version = '2.3.0'
         okhttp_logging_interceptor_version = '3.9.0'
         lifecycle_version = "2.0.0"
+        nav_version = "1.0.0-beta01"
     }
     repositories {
         google()
@@ -17,6 +18,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

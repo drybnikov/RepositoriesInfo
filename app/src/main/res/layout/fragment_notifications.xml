@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+            android:id="@+id/smallItem"
+            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:padding="@dimen/normal_gap"
+            style="@style/Widget.MaterialComponents.CardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardElevation="@dimen/card_corner"
+            android:transitionName="cardTransitionNameStart">
+
+            <TextView
+                    android:id="@+id/notificationName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:textColor="?colorPrimaryVariant"
+                    android:paddingLeft="@dimen/small_gap"
+                    android:text="My Notification"
+                    android:transitionName="titleTransitionNameStart"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!--<com.google.android.material.button.MaterialButton>
+            android:id="@+id/notificationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification Details"
+            style="@style/Widget.MaterialComponents.Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/normal_gap"
+            android:transitionName="firstTransitionName"/-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

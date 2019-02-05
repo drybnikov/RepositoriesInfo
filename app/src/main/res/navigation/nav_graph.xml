@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/motionDashboardFragment"
+            app:popUpToInclusive="true">
+
+    <fragment android:id="@+id/motionDashboardFragment"
+              android:name="com.test.denis.repositoriesinfo.ui.MotionDashboardFragment"
+              android:label="MotionDashboardFragment"
+              tools:layout="@layout/motion_01_basic"/>
+
+    <fragment android:id="@+id/navigation_notifications"
+              android:name="com.test.denis.repositoriesinfo.ui.NotificationsFragment"
+              android:label="Notifications"
+              tools:layout="@layout/fragment_notifications">
+        <action android:id="@+id/open_notification"
+                app:destination="@id/notification_details"/>
+    </fragment>
+
+    <fragment android:id="@+id/notification_details"
+              android:name="com.test.denis.repositoriesinfo.ui.NotificationDetailsFragment"
+              android:label="Notification Details"
+              tools:layout="@layout/fragment_notifications_details">
+        <argument android:name="notification_id" app:argType="string"/>
+    </fragment>
+
+    <fragment android:id="@+id/repositoryListFragment"
+              android:name="com.test.denis.repositoriesinfo.ui.RepositoryListFragment"
+              android:label="RepositoryListFragment"/>
+
+</navigation>

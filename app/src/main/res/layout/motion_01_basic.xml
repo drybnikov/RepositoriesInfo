@@ -2,15 +2,17 @@
 <androidx.constraintlayout.motion.widget.MotionLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/motionLayout"
+        android:id="@+id/motionLayout01"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/app_bar_height"
         app:layoutDescription="@xml/scene_05"
-        app:showPaths="false">
+        app:showPaths="true">
 
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:textSize="48dp"
+              android:textColor="@color/colorDrawerBackground"
               android:text="Hello World"/>
 
 
