@@ -1,4 +1,4 @@
-package com.test.denis.repositoriesinfo.ui
+package com.test.denis.repositoriesinfo.widget
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

@@ -10,4 +10,12 @@
 
     <color name="colorItemActivated">#cfd8dc</color>
     <color name="colorItemSelected">#eceff1</color>
+
+    <color name="colorDrawerBackground">#343940</color>
+    <color name="colorDrawerPrimary">#FCCE1D</color>
+    <color name="colorDrawerPrimaryDark">#343940</color>
+    <color name="colorDrawerPrimaryVariant">#FDF03D</color>
+    <color name="colorDrawerText">#898A8B</color>
+    <color name="colorDrawerGrey">#DAD6D4</color>
+    <color name="colorDrawerAccent">#CFA392</color>
 </resources>

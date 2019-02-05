@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:name=".RepositoriesInfoApp">
-        <activity android:name=".ui.RepositoryListActivity">
+        <activity android:name=".ui.MotionLayoutActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.RepositoryListActivity"/>
     </application>
 
 </manifest>

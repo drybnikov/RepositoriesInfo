@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+        xmlns:motion="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Transition
+            motion:constraintSetStart="@id/start"
+            motion:constraintSetEnd="@id/end"
+            motion:duration="400"
+            motion:interpolator="linear">
+        <OnSwipe
+                motion:touchAnchorId="@+id/button"
+                motion:touchAnchorSide="top"
+                motion:dragDirection="dragUp"/>
+        <OnClick motion:clickAction="toggle" motion:target="@id/toggleButton"/>
+
+        <KeyFrameSet>
+            <KeyPosition
+                    motion:keyPositionType="parentRelative"
+                    motion:pathMotionArc="startVertical"
+                    motion:framePosition="50"
+                    motion:target="@id/button"/>
+            <KeyAttribute
+                    motion:keyPositionType="parentRelative"
+                    motion:framePosition="75"
+                    android:alpha="0"
+                    android:rotation="-180"
+                    motion:target="@id/fab"/>
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+                android:id="@+id/button"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintTop_toTopOf="@id/bottomBar"
+                motion:layout_constraintStart_toStartOf="parent">
+
+            <CustomAttribute
+                    motion:attributeName="backgroundColor"
+                    motion:customColorValue="@color/colorPrimaryDark"/>
+        </Constraint>
+        <Constraint
+                android:id="@id/image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintTop_toBottomOf="@+id/button">
+            <CustomAttribute
+                    motion:attributeName="saturation"
+                    motion:customFloatValue="0"/>
+        </Constraint>
+
+        <Constraint
+                android:id="@id/bottomBar"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"/>
+
+        <Constraint
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/topShadow"
+                android:alpha="0"/>
+
+        <Constraint
+                android:id="@id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintBottom_toTopOf="@id/bottomBar"
+                motion:layout_constraintTop_toTopOf="@id/bottomBar"/>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+                android:id="@+id/button"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="8dp"
+                motion:layout_constraintTop_toTopOf="@id/guidelineHorizontal">
+            <CustomAttribute
+                    motion:attributeName="backgroundColor"
+                    motion:customColorValue="@color/colorPrimaryVariant"/>
+        </Constraint>
+        <Constraint
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintTop_toTopOf="@+id/button">
+            <CustomAttribute
+                    motion:attributeName="saturation"
+                    motion:customFloatValue="1"/>
+        </Constraint>
+
+        <Constraint
+                android:id="@id/fab"
+                android:alpha="0"
+                android:scaleX="0"
+                android:scaleY="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintBottom_toTopOf="@id/bottomBar"
+                motion:layout_constraintTop_toTopOf="@id/bottomBar"/>
+
+        <Constraint
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:id="@+id/bottomBar"
+                android:alpha="0.55"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintEnd_toStartOf="@id/guidelineVertical"/>
+
+        <Constraint
+                android:id="@id/topShadow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.5"/>
+
+        <Constraint
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rotation="90"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintTop_toTopOf="@id/bottomBar"
+                motion:layout_constraintStart_toStartOf="parent"/>
+    </ConstraintSet>
+</MotionScene>

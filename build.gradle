@@ -8,6 +8,7 @@ buildscript {
         rx_android_version = '2.0.1'
         retrofit_version = '2.3.0'
         okhttp_logging_interceptor_version = '3.9.0'
+        lifecycle_version = "2.0.0"
     }
     repositories {
         google()

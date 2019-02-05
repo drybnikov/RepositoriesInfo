@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/motionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutDescription="@xml/scene_05"
+        app:showPaths="false">
+
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textSize="48dp"
+              android:text="Hello World"/>
+
+
+    <View android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:id="@+id/topShadow"
+          android:background="@android:color/black"/>
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/image"
+            android:src="@drawable/sunset2"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:elevation="4dp"
+            android:src="@android:drawable/ic_menu_edit"/>
+
+    <View
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"/>
+
+    <View android:layout_width="0dp"
+          android:layout_height="48dp"
+          android:id="@+id/bottomBar"
+          android:padding="4dp"
+          app:elevation="4dp"
+          android:background="@color/colorAccent"/>
+
+    <ImageView
+            android:id="@+id/toggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_outline_menu_24px"
+            android:tint="@color/colorSurface"
+            android:alpha="0.7"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/bottomBar"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:text="Hello Motion"
+              android:shadowDx="4"
+              android:shadowRadius="8"
+              android:shadowColor="@android:color/black"
+              android:textColor="@color/colorSurface"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintTop_toTopOf="@id/bottomBar"
+              app:layout_constraintStart_toEndOf="@id/toggleButton"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guidelineVertical"
+            app:layout_constraintGuide_percent="0.5"
+            android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guidelineHorizontal"
+            app:layout_constraintGuide_percent="0.6"
+            android:orientation="horizontal"/>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

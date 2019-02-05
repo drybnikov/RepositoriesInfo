@@ -110,6 +110,10 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun setQuery(query: String) {
+        if (query == viewState.queryString) {
+            return
+        }
+
         viewState.apply {
             queryString = query
             currentPage = FIRST_PAGE
@@ -155,13 +159,13 @@ interface RepositoryListView {
 
 @Parcelize
 data class ViewState(
-    var queryString: String = "tetris",
-    var currentPage: Int = FIRST_PAGE,
+    var queryString: String,
+    var currentPage: Int,
     var totalCount: Int = 0,
     var data: ArrayList<Repo>
 ) : Parcelable {
     companion object {
-        val EMPTY = ViewState(queryString = "tetris", currentPage = FIRST_PAGE, data = arrayListOf())
+        val EMPTY = ViewState(queryString = "kotlinbackend", currentPage = FIRST_PAGE, data = arrayListOf())
     }
 }
 
