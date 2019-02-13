@@ -30,35 +30,29 @@ class RepositoryListPresenter @Inject constructor(
     private val disposable = CompositeDisposable()
     private var connectionDisposable = Disposables.disposed()
     private var view: RepositoryListView? = null
-    private var viewState = ViewState.EMPTY
 
     fun onAttach(view: RepositoryListView) {
         this.view = view
 
         searchViewModel.data.observe(view, Observer { result ->
-            Log.w("observe", "data: $viewState")
+            Log.w("observe", "data: $result")
+
+            view.apply {
+                //if (!result.isFirstPage()) {
+                    showRepositoryList(result.data)
+                //}
+                onRetrieveReposListDone()
+            }
         })
 
-        if (searchViewModel.data.value != null) {
-            viewState = searchViewModel.data.value!!
-            restoreState()
-        } else {
-            searchViewModel.data.value = viewState
+        if (searchViewModel.data.value == null) {
             onRetrieveReposListStart()
             loadData()
         }
     }
 
-    private fun restoreState() {
-        Log.d("restoreState", "data: $viewState")
-
-        view?.apply {
-            showRepositoryList(viewState.data)
-            onRetrieveReposListDone()
-        }
-    }
-
     private fun loadData() {
+        val viewState = searchViewModel.viewState()
         disposable.add(
             repository
                 .searchRepo(query = viewState.queryString, page = viewState.currentPage)
@@ -67,19 +61,19 @@ class RepositoryListPresenter @Inject constructor(
         )
     }
 
+    private fun SearchViewModel.viewState() = data.value ?: ViewState(queryString = "kotlinbackend", currentPage = FIRST_PAGE, data = arrayListOf())
+
     private fun onDataLoaded(data: RepositoryResponse) {
         Log.d("onDataLoaded", "data: $data")
+        val viewState = searchViewModel.viewState()
         viewState.totalCount = data.total
         viewState.data.addAll(data.items)
-        onRetrieveReposListDone()
 
-        view?.apply {
-            if (viewState.isFirstPage()) {
-                showMoreItems(data.items)
-            } else {
-                showRepositoryList(data.items)
-            }
-        }
+        searchViewModel.data.value = viewState
+
+        /*if (viewState.isFirstPage()) {
+            view?.showMoreItems(data.items)
+        }*/
     }
 
     private fun onDataError(error: Throwable) {
@@ -95,7 +89,7 @@ class RepositoryListPresenter @Inject constructor(
                     if (it == ConnectionStatus.CONNECTED) {
                         connectionDisposable.dispose()
 
-                        setQuery(viewState.queryString)
+                        setQuery(searchViewModel.viewState().queryString)
                     }
                 }
         }
@@ -109,6 +103,8 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun loadNextPage() {
+        val viewState = searchViewModel.viewState()
+
         if (viewState.hasMoreElements()) {
             this.view?.setLoadMoreVisibility(true)
             viewState.currentPage++
@@ -118,6 +114,8 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun setQuery(query: String) {
+        val viewState = searchViewModel.viewState()
+
         if (query == viewState.queryString) {
             return
         }
