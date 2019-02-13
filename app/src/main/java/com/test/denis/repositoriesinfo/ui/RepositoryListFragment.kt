@@ -6,12 +6,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,8 +25,6 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
 
     @Inject
     lateinit var presenter: RepositoryListPresenter
-    @Inject
-    lateinit var searchViewModel: SearchViewModel
 
     private var viewAdapter by autoCleared<RepositoryListAdapter>()
     private var errorSnackbar: Snackbar? = null
@@ -46,8 +40,6 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
         initList()
 
         presenter.onAttach(this)
-
-        subscribeToSearchUpdate()
     }
 
     private fun initList() {
@@ -69,12 +61,6 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
                 }
             })
         }
-    }
-
-    private fun subscribeToSearchUpdate() {
-        searchViewModel.query.observe(viewLifecycleOwner, Observer { result ->
-            presenter.setQuery(result)
-        })
     }
 
     override fun showRepositoryList(repos: List<Repo>) {
@@ -102,8 +88,10 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
     override fun showError(@StringRes errorMessage: Int) {
         isLoading = false
         errorSnackbar = Snackbar.make(view!!.rootView, errorMessage, Snackbar.LENGTH_INDEFINITE)
-        errorSnackbar?.setAction(R.string.retry, { presenter.retry() })
-        errorSnackbar?.show()
+            .apply {
+                setAction(R.string.retry, { presenter.retry() })
+                errorSnackbar?.show()
+            }
     }
 
     override fun hideError() {
@@ -112,17 +100,5 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
 
     override fun navigateTo(directions: NavDirections) {
         findNavController().navigate(directions)
-    }
-
-    companion object {
-        private const val TAG = "RepositoryListFragment"
-
-        fun attachIfNeeded(@IdRes containerViewId: Int, fm: FragmentManager) {
-            if (fm.findFragmentByTag(TAG) == null) {
-                fm.beginTransaction()
-                    .add(containerViewId, RepositoryListFragment(), TAG)
-                    .commitAllowingStateLoss()
-            }
-        }
     }
 }

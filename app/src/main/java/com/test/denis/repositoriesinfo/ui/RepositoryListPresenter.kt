@@ -34,19 +34,31 @@ class RepositoryListPresenter @Inject constructor(
     fun onAttach(view: RepositoryListView) {
         this.view = view
 
-        searchViewModel.data.observe(view, Observer { result ->
-            Log.w("observe", "data: $result")
-
-            view.apply {
-                showRepositoryList(result.data)
-                onRetrieveReposListDone()
-            }
-        })
+        subscribeToDataUpdate()
+        subscribeToSearchUpdate()
 
         if (searchViewModel.data.value == null) {
             onRetrieveReposListStart()
             loadData()
         }
+    }
+
+    private fun subscribeToSearchUpdate() {
+        searchViewModel.query.observe(view!!, Observer { result ->
+            setQuery(result)
+        })
+    }
+
+    private fun subscribeToDataUpdate() {
+        view?.let {
+            searchViewModel.data.observe(it, Observer { result ->
+                Log.w("observe", "data: $result")
+
+                it.showRepositoryList(result.data)
+                onRetrieveReposListDone()
+            })
+        }
+
     }
 
     private fun loadData() {
@@ -91,7 +103,7 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun onDetach() {
-        searchViewModel.data.removeObservers(view!!)
+        //searchViewModel.data.removeObservers(view!!) //TODO Check on MemoryLeak
         view = null
         disposable.clear()
         connectionDisposable.dispose()
