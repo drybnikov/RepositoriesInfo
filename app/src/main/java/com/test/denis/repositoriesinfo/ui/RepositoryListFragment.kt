@@ -94,11 +94,6 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
         loadMoreBar.visibility = if (visible) VISIBLE else GONE
     }
 
-    override fun showMoreItems(repos: List<Repo>) {
-        isLoading = false
-        viewAdapter.addData(repos)
-    }
-
     override fun onDestroy() {
         presenter.onDetach()
         super.onDestroy()

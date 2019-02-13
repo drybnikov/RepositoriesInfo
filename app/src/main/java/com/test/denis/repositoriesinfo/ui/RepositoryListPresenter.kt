@@ -38,9 +38,7 @@ class RepositoryListPresenter @Inject constructor(
             Log.w("observe", "data: $result")
 
             view.apply {
-                //if (!result.isFirstPage()) {
-                    showRepositoryList(result.data)
-                //}
+                showRepositoryList(result.data)
                 onRetrieveReposListDone()
             }
         })
@@ -61,7 +59,8 @@ class RepositoryListPresenter @Inject constructor(
         )
     }
 
-    private fun SearchViewModel.viewState() = data.value ?: ViewState(queryString = "kotlinbackend", currentPage = FIRST_PAGE, data = arrayListOf())
+    private fun SearchViewModel.viewState() =
+        data.value ?: ViewState(queryString = "kotlinbackend", currentPage = FIRST_PAGE, data = arrayListOf())
 
     private fun onDataLoaded(data: RepositoryResponse) {
         Log.d("onDataLoaded", "data: $data")
@@ -70,10 +69,6 @@ class RepositoryListPresenter @Inject constructor(
         viewState.data.addAll(data.items)
 
         searchViewModel.data.value = viewState
-
-        /*if (viewState.isFirstPage()) {
-            view?.showMoreItems(data.items)
-        }*/
     }
 
     private fun onDataError(error: Throwable) {
@@ -158,7 +153,6 @@ interface RepositoryListView : LifecycleOwner {
     fun showRepositoryList(repos: List<Repo>)
     fun setProgressVisibility(visible: Boolean)
     fun setLoadMoreVisibility(visible: Boolean)
-    fun showMoreItems(repos: List<Repo>)
     fun showError(@StringRes errorMessage: Int)
     fun hideError()
     fun navigateTo(directions: NavDirections)
@@ -170,12 +164,6 @@ data class ViewState(
     var currentPage: Int,
     var totalCount: Int = 0,
     var data: ArrayList<Repo>
-) : Parcelable {
-    companion object {
-        val EMPTY = ViewState(queryString = "kotlinbackend", currentPage = FIRST_PAGE, data = arrayListOf())
-    }
-}
+) : Parcelable
 
 fun ViewState.hasMoreElements() = currentPage * PAGE_SIZE < totalCount
-
-fun ViewState.isFirstPage() = currentPage > FIRST_PAGE

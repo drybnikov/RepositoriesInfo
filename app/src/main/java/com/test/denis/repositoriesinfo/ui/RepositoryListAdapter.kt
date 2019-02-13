@@ -21,13 +21,6 @@ class RepositoryListAdapter(
         notifyDataSetChanged()
     }
 
-    fun addData(listItems: List<Repo>) {
-        var size = this.items.size
-        items.addAll(listItems)
-        var sizeNew = items.size
-        notifyItemRangeChanged(size, sizeNew)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_repo, parent, false)

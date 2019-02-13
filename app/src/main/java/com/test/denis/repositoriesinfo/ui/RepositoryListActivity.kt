@@ -106,11 +106,6 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
         loadMoreBar.visibility = if (visible) VISIBLE else GONE
     }
 
-    override fun showMoreItems(repos: List<Repo>) {
-        isLoading = false
-        viewAdapter.addData(repos)
-    }
-
     override fun onDestroy() {
         presenter.onDetach()
         super.onDestroy()
@@ -124,8 +119,10 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     override fun showError(@StringRes errorMessage: Int) {
         isLoading = false
         errorSnackbar = Snackbar.make(rootView, errorMessage, Snackbar.LENGTH_INDEFINITE)
-        errorSnackbar?.setAction(R.string.retry, { presenter.retry() })
-        errorSnackbar?.show()
+            .apply {
+                setAction(R.string.retry) { presenter.retry() }
+                errorSnackbar?.show()
+            }
     }
 
     override fun hideError() {
