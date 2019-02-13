@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.navigation.NavDirections
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.model.Repo
 import com.test.denis.repositoriesinfo.model.RepositoryResponse
@@ -146,6 +147,10 @@ class RepositoryListPresenter @Inject constructor(
             setLoadMoreVisibility(false)
         }
     }
+
+    fun onItemClick(repo: Repo) {
+        view?.navigateTo(RepositoryListFragmentDirections.openRepository(repo.fullName))
+    }
 }
 
 interface RepositoryListView {
@@ -155,6 +160,7 @@ interface RepositoryListView {
     fun showMoreItems(repos: List<Repo>)
     fun showError(@StringRes errorMessage: Int)
     fun hideError()
+    fun navigateTo(directions: NavDirections)
 }
 
 @Parcelize

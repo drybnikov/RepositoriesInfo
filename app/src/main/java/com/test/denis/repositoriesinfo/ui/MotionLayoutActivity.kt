@@ -15,13 +15,13 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.di.Injectable
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.motion_10_coordinatorlayout_header.*
+import kotlinx.android.synthetic.main.coordinatorlayout_header.*
+import kotlinx.android.synthetic.main.motion_01_basic.*
 import kotlinx.android.synthetic.main.motion_drawerlayout.*
 import kotlinx.android.synthetic.main.motion_drawerlayout_content.*
 import javax.inject.Inject
@@ -35,6 +35,7 @@ class MotionLayoutActivity : AppCompatActivity(), Injectable, HasSupportFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.motion_drawerlayout)
+
         drawerLayout.setScrimColor(Color.TRANSPARENT)
 
         toggleButton.setOnClickListener {

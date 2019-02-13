@@ -27,6 +27,9 @@
 
     <fragment android:id="@+id/repositoryListFragment"
               android:name="com.test.denis.repositoriesinfo.ui.RepositoryListFragment"
-              android:label="RepositoryListFragment"/>
+              android:label="RepositoryListFragment">
+        <action android:id="@+id/open_repository"
+                app:destination="@id/notification_details"/>
+    </fragment>
 
 </navigation>

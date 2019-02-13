@@ -12,12 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.di.Injectable
 import com.test.denis.repositoriesinfo.model.Repo
+import com.test.denis.repositoriesinfo.util.autoCleared
 import com.test.denis.repositoriesinfo.widget.PaginationScrollListener
 import kotlinx.android.synthetic.main.fragment_repository_list.*
 import javax.inject.Inject
@@ -29,7 +32,7 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
 
     lateinit var searchViewModel: SearchViewModel
 
-    private lateinit var viewAdapter: RepositoryListAdapter
+    private var viewAdapter by autoCleared<RepositoryListAdapter>()
     private var errorSnackbar: Snackbar? = null
     private var isLoading = false
 
@@ -49,7 +52,7 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
     }
 
     private fun initList() {
-        viewAdapter = RepositoryListAdapter()
+        viewAdapter = RepositoryListAdapter { presenter.onItemClick(it) }
         contentList.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
@@ -116,6 +119,10 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
 
     override fun hideError() {
         errorSnackbar?.dismiss()
+    }
+
+    override fun navigateTo(directions: NavDirections) {
+        findNavController().navigate(directions)
     }
 
     companion object {

@@ -5,5 +5,5 @@
     <dimen name="avatar_width">64dp</dimen>
     <dimen name="card_corner">6dp</dimen>
 
-    <dimen name="app_bar_height">140dp</dimen>
+    <dimen name="app_bar_height">120dp</dimen>
 </resources>

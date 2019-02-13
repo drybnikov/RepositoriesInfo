@@ -9,11 +9,13 @@ import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.model.Repo
 import kotlinx.android.synthetic.main.item_repo.view.*
 
-class RepositoryListAdapter : RecyclerView.Adapter<RepoItemViewHolder>() {
+class RepositoryListAdapter(
+    private val repoClickCallback: ((Repo) -> Unit)?
+) : RecyclerView.Adapter<RepoItemViewHolder>() {
 
     private val items: ArrayList<Repo> = arrayListOf()
 
-    fun initData(listItems: List<Repo>){
+    fun initData(listItems: List<Repo>) {
         items.clear()
         items.addAll(listItems)
         notifyDataSetChanged()
@@ -36,7 +38,11 @@ class RepositoryListAdapter : RecyclerView.Adapter<RepoItemViewHolder>() {
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(viewHolder: RepoItemViewHolder, position: Int) {
-        viewHolder.bind(items[position])
+        val listItemModel = items[position]
+        viewHolder.bind(listItemModel)
+        viewHolder.itemView.setOnClickListener {
+            repoClickCallback?.invoke(listItemModel)
+        }
     }
 }
 

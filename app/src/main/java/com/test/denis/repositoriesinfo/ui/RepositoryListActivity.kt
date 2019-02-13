@@ -10,8 +10,10 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -41,7 +43,7 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     }
 
     private fun initList() {
-        viewAdapter = RepositoryListAdapter()
+        viewAdapter = RepositoryListAdapter { presenter.onItemClick(it) }
         contentList.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
@@ -134,5 +136,9 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
 
     override fun hideError() {
         errorSnackbar?.dismiss()
+    }
+
+    override fun navigateTo(directions: NavDirections) {
+        Toast.makeText(this, "NavigateTo ${directions.actionId}", Toast.LENGTH_SHORT).show()
     }
 }
