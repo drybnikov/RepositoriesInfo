@@ -7,6 +7,7 @@ import java.util.*
 
 class SearchViewModel : ViewModel() {
     private val _query = MutableLiveData<String>()
+    val data = MutableLiveData<ViewState>()
 
     val query: LiveData<String> = _query
 

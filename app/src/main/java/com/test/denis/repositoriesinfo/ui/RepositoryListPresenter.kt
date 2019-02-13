@@ -1,9 +1,10 @@
 package com.test.denis.repositoriesinfo.ui
 
-import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.model.Repo
@@ -20,30 +21,35 @@ import java.io.IOException
 import javax.inject.Inject
 
 const val FIRST_PAGE: Int = 1
-const val VIEW_STATE_KEY: String = "stored_voew_state"
 
 class RepositoryListPresenter @Inject constructor(
     private val repository: RepoRepository,
-    private val connectionStatusProvider: ConnectionStatusProvider
+    private val connectionStatusProvider: ConnectionStatusProvider,
+    private val searchViewModel: SearchViewModel
 ) {
     private val disposable = CompositeDisposable()
     private var connectionDisposable = Disposables.disposed()
     private var view: RepositoryListView? = null
     private var viewState = ViewState.EMPTY
 
-    fun onAttach(view: RepositoryListView, savedInstanceState: Bundle?) {
+    fun onAttach(view: RepositoryListView) {
         this.view = view
 
-        if (savedInstanceState != null) {
-            restoreState(savedInstanceState)
+        searchViewModel.data.observe(view, Observer { result ->
+            Log.w("observe", "data: $viewState")
+        })
+
+        if (searchViewModel.data.value != null) {
+            viewState = searchViewModel.data.value!!
+            restoreState()
         } else {
+            searchViewModel.data.value = viewState
             onRetrieveReposListStart()
             loadData()
         }
     }
 
-    private fun restoreState(savedInstanceState: Bundle) {
-        viewState = savedInstanceState.getParcelable(VIEW_STATE_KEY) as ViewState? ?: ViewState.EMPTY
+    private fun restoreState() {
         Log.d("restoreState", "data: $viewState")
 
         view?.apply {
@@ -96,6 +102,7 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun onDetach() {
+        searchViewModel.data.removeObservers(view!!)
         view = null
         disposable.clear()
         connectionDisposable.dispose()
@@ -125,10 +132,6 @@ class RepositoryListPresenter @Inject constructor(
         loadData()
     }
 
-    fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putParcelable(VIEW_STATE_KEY, viewState)
-    }
-
     fun retry() {
         onRetrieveReposListStart()
         loadData()
@@ -153,7 +156,7 @@ class RepositoryListPresenter @Inject constructor(
     }
 }
 
-interface RepositoryListView {
+interface RepositoryListView : LifecycleOwner {
     fun showRepositoryList(repos: List<Repo>)
     fun setProgressVisibility(visible: Boolean)
     fun setLoadMoreVisibility(visible: Boolean)

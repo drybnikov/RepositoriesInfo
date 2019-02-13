@@ -29,7 +29,7 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
 
     @Inject
     lateinit var presenter: RepositoryListPresenter
-
+    @Inject
     lateinit var searchViewModel: SearchViewModel
 
     private var viewAdapter by autoCleared<RepositoryListAdapter>()
@@ -44,9 +44,8 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initList()
-        searchViewModel = ViewModelProviders.of(activity!!).get(SearchViewModel::class.java)
 
-        presenter.onAttach(this, savedInstanceState)
+        presenter.onAttach(this)
 
         subscribeToSearchUpdate()
     }
@@ -103,11 +102,6 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
     override fun onDestroy() {
         presenter.onDetach()
         super.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        presenter.onSaveInstanceState(outState)
-        super.onSaveInstanceState(outState)
     }
 
     override fun showError(@StringRes errorMessage: Int) {

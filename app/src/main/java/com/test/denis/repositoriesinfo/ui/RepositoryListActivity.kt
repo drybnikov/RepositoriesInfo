@@ -3,7 +3,6 @@ package com.test.denis.repositoriesinfo.ui
 import android.content.Context
 import android.os.Bundle
 import android.os.IBinder
-import android.os.PersistableBundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
@@ -39,7 +38,7 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
 
         initList()
         initSearchInputListener()
-        presenter.onAttach(this, savedInstanceState)
+        presenter.onAttach(this)
     }
 
     private fun initList() {
@@ -120,11 +119,6 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     private fun dismissKeyboard(windowToken: IBinder) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(windowToken, 0)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        presenter.onSaveInstanceState(outState)
-        super.onSaveInstanceState(outState, outPersistentState)
     }
 
     override fun showError(@StringRes errorMessage: Int) {

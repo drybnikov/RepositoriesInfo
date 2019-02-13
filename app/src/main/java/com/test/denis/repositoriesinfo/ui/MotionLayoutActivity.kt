@@ -30,6 +30,7 @@ class MotionLayoutActivity : AppCompatActivity(), Injectable, HasSupportFragment
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
+    @Inject
     lateinit var searchViewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,7 @@ class MotionLayoutActivity : AppCompatActivity(), Injectable, HasSupportFragment
             }
         })
 
-        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
+        //searchViewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
     }
 
     private fun initSearchInputListener() {
