@@ -19,7 +19,9 @@ data class Repo(
     val fullName: String,
     val owner: Owner,
     @field:Json(name = "has_wiki")
-    val hasWiki: Boolean
+    val hasWiki: Boolean,
+    val description: String,
+    val score: Double
 ) : Parcelable
 
 @Parcelize

@@ -57,8 +57,12 @@ class RepositoryDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.let {
             RepositoryDetailsFragmentArgs.fromBundle(it).repository.apply {
-                ownerName.text = name
-                ownerFullName.text = fullName
+                ownerName.text = owner.login
+                repoName.text = name
+                repoDescription.text = description
+                repoSize.text = size.toString()
+                repoScore.text = score.toString()
+
                 Glide
                     .with(this@RepositoryDetailsFragment)
                     .load(owner.avatarUrl)
@@ -67,8 +71,9 @@ class RepositoryDetailsFragment : Fragment() {
 
 
                 ownerImg.transitionName = "${owner.login}_image"
-                ownerName.transitionName = "${owner.login}_name"
+                repoName.transitionName = "${owner.login}_name"
                 repoCard.transitionName = "${owner.login}_card"
+                ownerName.transitionName = "${owner.login}"
             }
         }
     }

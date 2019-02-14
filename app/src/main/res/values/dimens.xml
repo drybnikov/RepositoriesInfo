@@ -3,7 +3,7 @@
     <dimen name="small_gap">4dp</dimen>
     <dimen name="normal_gap">8dp</dimen>
     <dimen name="avatar_width">64dp</dimen>
-    <dimen name="avatar_width_big">128dp</dimen>
+    <dimen name="avatar_width_big">148dp</dimen>
     <dimen name="card_corner">6dp</dimen>
 
     <dimen name="app_bar_height">120dp</dimen>

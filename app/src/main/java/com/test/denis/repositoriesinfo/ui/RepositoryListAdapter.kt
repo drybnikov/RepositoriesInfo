@@ -55,7 +55,8 @@ class RepoItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 .into(imageView)
             imageView.transitionName = "${owner.login}_avatar"
             itemView.transitionName = "${owner.login}_item"
-            nameText.transitionName = "${owner.login}_name"
+            nameText.transitionName = "${owner.login}_repo"
+            loginText.transitionName = "${owner.login}_name"
 
             nameText.text = name
             loginText.text = owner.login
@@ -64,8 +65,9 @@ class RepoItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             val extras = FragmentNavigatorExtras(
                 imageView to "${owner.login}_image",
+                nameText to "${owner.login}_name",
                 itemView to "${owner.login}_card",
-                nameText to "${owner.login}_name"
+                loginText to "${owner.login}"
             )
 
             itemView.setOnClickListener {
