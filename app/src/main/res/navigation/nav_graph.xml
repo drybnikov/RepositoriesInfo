@@ -25,11 +25,18 @@
         <argument android:name="notification_id" app:argType="string"/>
     </fragment>
 
+    <fragment android:id="@+id/repository_details"
+              android:name="com.test.denis.repositoriesinfo.ui.RepositoryDetailsFragment"
+              android:label="Repository Details"
+              tools:layout="@layout/fragment_notifications_details">
+        <argument android:name="repository" app:argType="com.test.denis.repositoriesinfo.model.Repo"/>
+    </fragment>
+
     <fragment android:id="@+id/repositoryListFragment"
               android:name="com.test.denis.repositoriesinfo.ui.RepositoryListFragment"
               android:label="RepositoryListFragment">
         <action android:id="@+id/open_repository"
-                app:destination="@id/notification_details"/>
+                app:destination="@id/repository_details"/>
     </fragment>
 
 </navigation>

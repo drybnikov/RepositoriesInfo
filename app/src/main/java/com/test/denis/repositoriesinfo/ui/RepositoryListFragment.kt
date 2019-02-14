@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
+import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionInflater
 import com.google.android.material.snackbar.Snackbar
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.di.Injectable
@@ -34,7 +37,11 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_repository_list, null)
+    ): View? {
+        sharedElementEnterTransition = ChangeBounds()
+
+        return inflater.inflate(R.layout.fragment_repository_list, null)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initList()
@@ -43,7 +50,9 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
     }
 
     private fun initList() {
-        viewAdapter = RepositoryListAdapter { presenter.onItemClick(it) }
+        viewAdapter = RepositoryListAdapter { repo, extras ->
+            presenter.onItemClick(repo, extras)
+        }
         contentList.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
@@ -60,6 +69,12 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
                     presenter.loadNextPage()
                 }
             })
+        }
+
+        postponeEnterTransition()
+        contentList.viewTreeObserver.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
         }
     }
 
@@ -98,7 +113,7 @@ class RepositoryListFragment : Fragment(), Injectable, RepositoryListView {
         errorSnackbar?.dismiss()
     }
 
-    override fun navigateTo(directions: NavDirections) {
-        findNavController().navigate(directions)
+    override fun navigateTo(directions: NavDirections, extras: Navigator.Extras) {
+        findNavController().navigate(directions, extras)
     }
 }

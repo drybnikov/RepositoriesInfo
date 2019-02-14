@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavDirections
+import androidx.navigation.Navigator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +43,9 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
     }
 
     private fun initList() {
-        viewAdapter = RepositoryListAdapter { presenter.onItemClick(it) }
+        viewAdapter = RepositoryListAdapter { repo, extras ->
+            presenter.onItemClick(repo, extras)
+        }
         contentList.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
@@ -129,7 +132,7 @@ class RepositoryListActivity : AppCompatActivity(), Injectable, RepositoryListVi
         errorSnackbar?.dismiss()
     }
 
-    override fun navigateTo(directions: NavDirections) {
+    override fun navigateTo(directions: NavDirections, extras: Navigator.Extras) {
         Toast.makeText(this, "NavigateTo ${directions.actionId}", Toast.LENGTH_SHORT).show()
     }
 }

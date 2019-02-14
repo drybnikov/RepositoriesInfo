@@ -1,10 +1,14 @@
 package com.test.denis.repositoriesinfo.ui
 
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
+import androidx.navigation.Navigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.test.denis.repositoriesinfo.R
 import com.test.denis.repositoriesinfo.model.Repo
 import com.test.denis.repositoriesinfo.model.RepositoryResponse
@@ -142,8 +146,11 @@ class RepositoryListPresenter @Inject constructor(
         }
     }
 
-    fun onItemClick(repo: Repo) {
-        view?.navigateTo(RepositoryListFragmentDirections.openRepository(repo.fullName))
+    fun onItemClick(
+        repo: Repo,
+        extras: Navigator.Extras
+    ) {
+        view?.navigateTo(RepositoryListFragmentDirections.openRepository(repo), extras)
     }
 }
 
@@ -153,5 +160,5 @@ interface RepositoryListView : LifecycleOwner {
     fun setLoadMoreVisibility(visible: Boolean)
     fun showError(@StringRes errorMessage: Int)
     fun hideError()
-    fun navigateTo(directions: NavDirections)
+    fun navigateTo(directions: NavDirections, extras: Navigator.Extras)
 }

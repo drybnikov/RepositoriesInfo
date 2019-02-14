@@ -1,0 +1,74 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+            android:id="@+id/repoCard"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:padding="@dimen/normal_gap"
+            style="@style/Widget.MaterialComponents.CardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardElevation="@dimen/card_corner">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/normal_gap">
+
+            <ImageView
+                    android:id="@+id/ownerImg"
+                    android:layout_width="@dimen/avatar_width_big"
+                    android:layout_height="@dimen/avatar_width_big"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_margin="@dimen/small_gap"
+                    android:src="@drawable/sunset2"/>
+
+            <TextView
+                    android:id="@+id/ownerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:textColor="?colorPrimaryVariant"
+                    android:paddingLeft="@dimen/small_gap"
+                    app:layout_constraintLeft_toRightOf="@+id/ownerImg"
+                    app:layout_constraintRight_toLeftOf="@id/repoSize"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/ownerFullName"
+                    android:text="My Notification"/>
+
+            <TextView
+                    android:id="@+id/ownerFullName"
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingLeft="@dimen/small_gap"
+                    android:textColor="?colorPrimaryDark"
+                    app:layout_constraintLeft_toRightOf="@id/ownerImg"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ownerName"
+                    android:text="@string/large_text"/>
+
+            <TextView
+                    android:id="@+id/repoSize"
+                    style="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    app:layout_constraintLeft_toRightOf="@id/notificationName"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textColor="?colorPrimaryVariant"
+                    android:text="111"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
