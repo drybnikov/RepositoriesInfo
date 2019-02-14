@@ -1,6 +1,5 @@
 package com.test.denis.repositoriesinfo.ui
 
-import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.LifecycleOwner
@@ -11,16 +10,12 @@ import com.test.denis.repositoriesinfo.model.Repo
 import com.test.denis.repositoriesinfo.model.RepositoryResponse
 import com.test.denis.repositoriesinfo.network.ConnectionStatus
 import com.test.denis.repositoriesinfo.network.ConnectionStatusProvider
-import com.test.denis.repositoriesinfo.network.PAGE_SIZE
 import com.test.denis.repositoriesinfo.network.RepoRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposables
-import kotlinx.android.parcel.Parcelize
 import java.io.IOException
 import javax.inject.Inject
-
-const val FIRST_PAGE: Int = 1
 
 class RepositoryListPresenter @Inject constructor(
     private val repository: RepoRepository,
@@ -39,7 +34,7 @@ class RepositoryListPresenter @Inject constructor(
 
         if (searchViewModel.data.value == null) {
             onRetrieveReposListStart()
-            loadData()
+            loadData("kotlinbackend")
         }
     }
 
@@ -54,33 +49,30 @@ class RepositoryListPresenter @Inject constructor(
             searchViewModel.data.observe(it, Observer { result ->
                 Log.w("observe", "data: $result")
 
-                it.showRepositoryList(result.data)
+                it.showRepositoryList(result)
                 onRetrieveReposListDone()
             })
         }
 
     }
 
-    private fun loadData() {
-        val viewState = searchViewModel.viewState()
-        disposable.add(
-            repository
-                .searchRepo(query = viewState.queryString, page = viewState.currentPage)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onDataLoaded, this::onDataError)
-        )
-    }
+    private fun loadData(query: String?) {
+        query?.let {
+            searchViewModel.lastQuery = query
 
-    private fun SearchViewModel.viewState() =
-        data.value ?: ViewState(queryString = "kotlinbackend", currentPage = FIRST_PAGE, data = arrayListOf())
+            disposable.add(
+                repository
+                    .searchRepo(query = query, page = searchViewModel.currentPage)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::onDataLoaded, this::onDataError)
+            )
+        }
+    }
 
     private fun onDataLoaded(data: RepositoryResponse) {
         Log.d("onDataLoaded", "data: $data")
-        val viewState = searchViewModel.viewState()
-        viewState.totalCount = data.total
-        viewState.data.addAll(data.items)
-
-        searchViewModel.data.value = viewState
+        searchViewModel.totalCount = data.total
+        searchViewModel.setData(data.items)
     }
 
     private fun onDataError(error: Throwable) {
@@ -96,7 +88,7 @@ class RepositoryListPresenter @Inject constructor(
                     if (it == ConnectionStatus.CONNECTED) {
                         connectionDisposable.dispose()
 
-                        setQuery(searchViewModel.viewState().queryString)
+                        setQuery(searchViewModel.query.value!!)
                     }
                 }
         }
@@ -110,36 +102,30 @@ class RepositoryListPresenter @Inject constructor(
     }
 
     fun loadNextPage() {
-        val viewState = searchViewModel.viewState()
 
-        if (viewState.hasMoreElements()) {
+        if (searchViewModel.hasMoreElements()) {
             this.view?.setLoadMoreVisibility(true)
-            viewState.currentPage++
+            searchViewModel.currentPage++
 
-            loadData()
+            loadData(searchViewModel.query.value)
         }
     }
 
     fun setQuery(query: String) {
-        val viewState = searchViewModel.viewState()
-
-        if (query == viewState.queryString) {
+        if (query == searchViewModel.lastQuery) {
             return
         }
 
-        viewState.apply {
-            queryString = query
-            currentPage = FIRST_PAGE
-            data.clear()
-        }
+        searchViewModel.currentPage = FIRST_PAGE
+        searchViewModel.data.value?.clear()
 
         onRetrieveReposListStart()
-        loadData()
+        loadData(query)
     }
 
     fun retry() {
         onRetrieveReposListStart()
-        loadData()
+        loadData(searchViewModel.query.value)
     }
 
     private fun onRetrieveReposListStart() {
@@ -169,13 +155,3 @@ interface RepositoryListView : LifecycleOwner {
     fun hideError()
     fun navigateTo(directions: NavDirections)
 }
-
-@Parcelize
-data class ViewState(
-    var queryString: String,
-    var currentPage: Int,
-    var totalCount: Int = 0,
-    var data: ArrayList<Repo>
-) : Parcelable
-
-fun ViewState.hasMoreElements() = currentPage * PAGE_SIZE < totalCount
